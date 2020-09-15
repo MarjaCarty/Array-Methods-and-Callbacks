@@ -19,6 +19,19 @@ fifaData.forEach(item => {
     }
 })
 
+// ******************************************************************************************************
+
+let winData = fifaData.filter(item => {
+    return (item.Year === 2014) && (item.Stage === "Final")
+})
+let winner = winData[0]["Home Team Goals"] > winData[0]["Away Team Goals"] ? winData[0]["Home Team Name"] : winData[0]["Away Team Name"];
+
+console.log(winData[0]["Home Team Name"]);
+console.log(winData[0]["Away Team Name"]);
+console.log(winData[0]["Home Team Goals"]);
+console.log(winData[0]["Away Team Goals"]);
+console.log(winner);
+
 /* Task 2: Create a function called  getFinals that takes `data` as an argument and returns an array of objects with only finals data */
 
 function getFinals(/* code here */) {
