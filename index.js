@@ -141,10 +141,8 @@ console.log(getCountryWins(fifaData, "GER"));
 function getGoals(data) {
     let filteredData = data.filter(item => item.Stage === "Final");
 
-    let homeTeam = filteredData.map(item => item["Home Team Name"])
-    let awayTeam = filteredData.map(item => item["Away Team Name"])
-
-    let teamNames = [...homeTeam, ...awayTeam]
+    let teamNames = filteredData.map(item => item["Home Team Name"])
+    filteredData.forEach(item => teamNames.push(item["Away Team Name"]));
 
     let appearances = Object.entries(teamNames.reduce((acc, item) => {
           acc[item] = acc[item] === undefined ? 1 : acc[item] += 1;
@@ -155,27 +153,20 @@ function getGoals(data) {
         appearances[i].push(0);
     }
 
-    let homeTeamGoals = filteredData.map(item => [item["Home Team Name"], item["Home Team Goals"]])
-    let awayTeamGoals = filteredData.map(item => [item["Away Team Name"], item["Away Team Goals"]])
+    let teamGoals = filteredData.map(item => [item["Home Team Name"], item["Home Team Goals"]])
+    filteredData.forEach(item => teamGoals.push([item["Away Team Name"], item["Away Team Goals"]]))
 
-    function compare(team) {
-        for (let i = 0; i < team.length; i++) {
-            for (let j = 0; j < appearances.length; j++) {
-                if(team[i][0] === appearances[j][0]) {
-                    appearances[j][2] += team[i][1];
-                }
+    for (let i = 0; i < teamGoals.length; i++) {
+        for (let j = 0; j < appearances.length; j++) {
+            if(teamGoals[i][0] === appearances[j][0]) {
+                appearances[j][2] += teamGoals[i][1];
             }
         }
-    } 
-
-    compare(homeTeamGoals);
-    compare(awayTeamGoals);
+    }
 
     let avgs = appearances.map(item => {
         return [item[0], item[2]/item[1]]
     })
-    
-    console.log(avgs);
 
     let maxArr = [];
     let most = [];
