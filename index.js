@@ -162,7 +162,7 @@ function getGoals(data) {
     let teamGoals = filteredData.map(item => [item["Home Team Name"], item["Home Team Goals"]])
     filteredData.forEach(item => teamGoals.push([item["Away Team Name"], item["Away Team Goals"]]))
 
-    //compares appearances and team Goals - if teamGoals team name === appearances team name, increment the counter in appearances by the number of goals in teamGoals array
+    //compares appearances and teamGoals - if teamGoals team name === appearances team name, increment the counter in appearances by the number of goals in teamGoals array
     for (let i = 0; i < teamGoals.length; i++) {
         for (let j = 0; j < appearances.length; j++) {
             if(teamGoals[i][0] === appearances[j][0]) {
@@ -171,7 +171,7 @@ function getGoals(data) {
         }
     }
 
-    //divides total geam goals by number of appearances and shoves them into yet another array - [[Team Name, Average]]
+    //divides total team goals by number of appearances and shoves them into yet another array - [[Team Name, Average]]
     let avgs = appearances.map(item => {
         return [item[0], item[2]/item[1]]
     })
