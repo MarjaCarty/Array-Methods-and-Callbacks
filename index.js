@@ -138,13 +138,59 @@ console.log(getCountryWins(fifaData, "GER"));
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
 
-function getGoals(/* code here */) {
+function getGoals(data) {
+    let filteredData = data.filter(item => item.Stage === "Final");
 
-    /* code here */
+    let homeTeam = filteredData.map(item => item["Home Team Name"])
+    let awayTeam = filteredData.map(item => item["Away Team Name"])
 
+    let teamNames = [...homeTeam, ...awayTeam]
+
+    let appearances = Object.entries(teamNames.reduce((acc, item) => {
+          acc[item] = acc[item] === undefined ? 1 : acc[item] += 1;
+          return acc;
+    }, {}))
+    
+    for (let i = 0; i < appearances.length; i++) {
+        appearances[i].push(0);
+    }
+
+    let homeTeamGoals = filteredData.map(item => [item["Home Team Name"], item["Home Team Goals"]])
+    let awayTeamGoals = filteredData.map(item => [item["Away Team Name"], item["Away Team Goals"]])
+
+    function compare(team) {
+        for (let i = 0; i < team.length; i++) {
+            for (let j = 0; j < appearances.length; j++) {
+                if(team[i][0] === appearances[j][0]) {
+                    appearances[j][2] += team[i][1];
+                }
+            }
+        }
+    } 
+
+    compare(homeTeamGoals);
+    compare(awayTeamGoals);
+
+    let avgs = appearances.map(item => {
+        return [item[0], item[2]/item[1]]
+    })
+    
+    console.log(avgs);
+
+    let maxArr = [];
+    let most = [];
+
+    for (let i = 0; i < avgs.length; i++) {
+        maxArr.push(avgs[i][1]);
+        let max = Math.max(...maxArr);
+        if (avgs[i][1] === max) {
+            most.push(avgs[i])
+        }
+    }
+    return most;
 };
 
-getGoals();
+console.log(getGoals(fifaData));
 
 
 /* Stretch 4: Write a function called badDefense() that accepts a parameter `data` and calculates the team with the most goals scored against them per appearance (average goals against) in the World Cup finals */
@@ -158,3 +204,57 @@ function badDefense(/* code here */) {
 badDefense();
 
 /* If you still have time, use the space below to work on any stretch goals of your chosing as listed in the README file. */
+
+// **************************Some Pieces***************************************
+    // let homeTeam = filteredData.map(item => {
+    //     return item["Home Team Name"]
+    // })
+
+    // let awayTeam = filteredData.map(item => {
+    //     return item["Away Team Name"]
+    // })
+
+    // let teamNames = [...homeTeam, ...awayTeam]
+
+    // let appearances = teamNames.reduce((acc, item) => {
+    //       acc[item] = acc[item] === undefined ? 1 : acc[item] += 1;
+    //       return acc;
+
+    // }, {})
+
+    // console.log(Object.values(appearances));
+
+    // let arr = [];
+    // let final = {};
+
+
+    // let homeReduce = filteredData.reduce((acc, current) => {
+    //     acc[current["Home Team Name"]] = current["Home Team Goals"]
+    //     return acc;
+    // }, {})
+    // let awayReduce = filteredData.reduce((acc, current) => {
+    //     acc[current["Away Team Name"]] = current["Away Team Goals"]
+    //     return acc;
+    // }, {})
+
+    // arr.push(homeReduce, awayReduce);
+    
+    // arr.forEach(item => {
+    //     for (let [key, value] of Object.entries(item)) {
+    //         if (final[key]) {
+    //             final[key] += value;
+    //         } else {
+    //             final[key] = value;
+    //         }
+    //     }
+    // })
+    // console.log(Object.values(final));
+
+    // let finalArr = []
+
+    // function blahblah(arr1, arr2) {
+    //     for (let i = 0; i < arr1.length; i++) {
+    //         finalArr.push(arr2[i] / arr1[i])
+    //     }
+    // }
+    // return finalArr;
