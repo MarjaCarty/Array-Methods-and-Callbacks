@@ -158,7 +158,7 @@ function getGoals(data) {
         appearances[i].push(0);
     }
 
-    //creates another multidimensional array - [[home team name, home team goals]] for every team and number of goals they scored in the each game
+    //creates another multidimensional array - [[team name, team goals]] for every team and number of goals they scored in the each game
     let teamGoals = filteredData.map(item => [item["Home Team Name"], item["Home Team Goals"]])
     filteredData.forEach(item => teamGoals.push([item["Away Team Name"], item["Away Team Goals"]]))
 
