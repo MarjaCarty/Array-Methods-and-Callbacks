@@ -139,23 +139,30 @@ console.log(getCountryWins(fifaData, "GER"));
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
 
 function getGoals(data) {
+    // filters data to get all the final games
     let filteredData = data.filter(item => item.Stage === "Final");
 
+    // puts all team names into one array, including duplicates
     let teamNames = filteredData.map(item => item["Home Team Name"])
     filteredData.forEach(item => teamNames.push(item["Away Team Name"]));
 
+    // start with empty object - is this key defined? - if not, make the key the current item and give it a value of one - if so, increment the value of the existing key by one
+    // extract keys and values of resulting object back into a multidimensional array [[key1, value1][key2, value2]] and so on
     let appearances = Object.entries(teamNames.reduce((acc, item) => {
           acc[item] = acc[item] === undefined ? 1 : acc[item] += 1;
           return acc;
     }, {}))
     
+    // push zero on the end of every mini-array to act as a counter for each team
     for (let i = 0; i < appearances.length; i++) {
         appearances[i].push(0);
     }
 
+    //creates another multidimensional array - [[home team name, home team goals]] for every team and number of goals they scored in the each game
     let teamGoals = filteredData.map(item => [item["Home Team Name"], item["Home Team Goals"]])
     filteredData.forEach(item => teamGoals.push([item["Away Team Name"], item["Away Team Goals"]]))
 
+    //compares appearances and team Goals - if teamGoals team name === appearances team name, increment the counter in appearances by the number of goals in teamGoals array
     for (let i = 0; i < teamGoals.length; i++) {
         for (let j = 0; j < appearances.length; j++) {
             if(teamGoals[i][0] === appearances[j][0]) {
@@ -164,10 +171,13 @@ function getGoals(data) {
         }
     }
 
+    //divides total geam goals by number of appearances and shoves them into yet another array - [[Team Name, Average]]
     let avgs = appearances.map(item => {
         return [item[0], item[2]/item[1]]
     })
 
+    // push the averages only into the maxArr array, then feed it into Math.max to find the maximum average
+    // turns out two teams achieved the maximum average, so then push [Team Name, Average] into the most array
     let maxArr = [];
     let most = [];
 
@@ -178,6 +188,7 @@ function getGoals(data) {
             most.push(avgs[i])
         }
     }
+    //return most array, which has uruguay and england both at an average of 4 goals per game
     return most;
 };
 
